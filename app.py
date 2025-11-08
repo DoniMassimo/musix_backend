@@ -68,6 +68,12 @@ def add_track(track_id: str):
     return jsonify({"status": "pipeline started"}), 202
 
 
+@app.route("/get_tracks_ids")
+def get_tracks_ids():
+    tracks_ids = fire.get_all_ids()
+    return jsonify(tracks_ids), 200
+
+
 if __name__ == "__main__":
     load_dotenv("config/secrets.env")
     fire.fire_init()

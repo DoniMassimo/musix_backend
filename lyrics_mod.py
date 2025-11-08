@@ -12,7 +12,6 @@ def lyrics_mod_init():
 
     if SP_DC is None:
         raise ValueError("Cant find env var SP_DC")
-    print(SP_DC)
 
     syir = Spotify(SP_DC)
 

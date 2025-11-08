@@ -4,13 +4,6 @@ from firebase_admin import db
 from chat import Response
 import os, json
 
-# firebase_cert_json = os.getenv("FIREBASE_CERT")
-# if firebase_cert_json is None:
-#     raise ValueError("Cant find env var FIREBASE_CERT")
-#
-# firebase_cert_dict = json.loads(firebase_cert_json)
-# cred = credentials.Certificate(firebase_cert_dict)
-
 
 def fire_init():
     db_url = os.getenv("FIREBASE_DB_URL")
@@ -30,3 +23,12 @@ def save_lyric(lyric: Response):
 
     ref = db.reference("/")
     ref.child("lyrics").child(lyric.lyric.track_id).set(lyric_dump)
+
+
+def get_all_ids():
+    ref = db.reference("lyrics")
+    raw_ids = ref.get(False, True)
+    if raw_ids:
+        if isinstance(raw_ids, dict):
+            return list(raw_ids.keys())
+    return []
