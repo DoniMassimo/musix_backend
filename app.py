@@ -74,6 +74,11 @@ def get_tracks_ids():
     return jsonify(tracks_ids), 200
 
 
+@app.route("/get_track_data/<track_id>")
+def get_track_data(track_id: str):
+    return fire.get_track_data(track_id)
+
+
 if __name__ == "__main__":
     load_dotenv("config/secrets.env")
     fire.fire_init()

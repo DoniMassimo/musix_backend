@@ -25,10 +25,18 @@ def save_lyric(lyric: Response):
     ref.child("lyrics").child(lyric.lyric.track_id).set(lyric_dump)
 
 
-def get_all_ids():
+def get_all_ids() -> list:
     ref = db.reference("lyrics")
     raw_ids = ref.get(False, True)
     if raw_ids:
         if isinstance(raw_ids, dict):
             return list(raw_ids.keys())
     return []
+
+
+def get_track_data(track_id) -> dict:
+    ref = db.reference("lyrics" + "/" + track_id)
+    data = ref.get()
+    if isinstance(data, dict):
+        return data
+    return {}
