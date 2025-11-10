@@ -2,11 +2,12 @@ import chat
 import lyrics_mod
 import fire
 import spoty
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, abort
 import threading
 from enum import Enum
 from dotenv import load_dotenv
 import traceback
+import os
 
 app = Flask(__name__)
 
@@ -20,8 +21,17 @@ class PipelineState(Enum):
     FAILED = "failed"
 
 
+API_KEY = None
+
 pipeline_running = False
 pipeline_state = PipelineState.STOP
+
+
+@app.before_request
+def check_api_key():
+    key = request.headers.get("x-api-key")
+    if key != API_KEY:
+        abort(401, description="Unauthorized")
 
 
 def translation_pipeline(track_id):
@@ -81,6 +91,9 @@ def get_track_data(track_id: str):
 
 if __name__ == "__main__":
     load_dotenv("config/secrets.env")
+    API_KEY = os.getenv("API_KEY")
+    if API_KEY is None:
+        raise ValueError("Cant find env var API_KEY")
     fire.fire_init()
     lyrics_mod.lyrics_mod_init()
     spoty.spoty_init()
