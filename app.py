@@ -97,4 +97,4 @@ if __name__ == "__main__":
     fire.fire_init()
     lyrics_mod.lyrics_mod_init()
     spoty.spoty_init()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
