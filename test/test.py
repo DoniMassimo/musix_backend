@@ -17,8 +17,7 @@ def test__get_tracks_ids():
         pprint(response.json())
 
 
-def test__get_track_data():
-    track_id = "40Mtjy3zM79tBYMy1R4GLy"
+def test__get_track_data(track_id):
     url = base_url + "/get_track_data/" + track_id
     headers = {"x-api-key": API_KEY}
     response = requests.get(url, headers=headers)
@@ -27,8 +26,7 @@ def test__get_track_data():
         pprint(response.json())
 
 
-def test__add_track():
-    track_id = "40Mtjy3zM79tBYMy1R4GLy"
+def test__add_track(track_id):
     url = base_url + "/add/" + track_id
     headers = {"x-api-key": API_KEY}
     response = requests.get(url, headers=headers)
@@ -51,7 +49,5 @@ if __name__ == "__main__":
     API_KEY = os.getenv("API_KEY")
     if API_KEY is None:
         raise ValueError("Cant find env var API_KEY")
-    # test__get_tracks_ids()
-    test__get_track_data()
-    # test__add_track()
-    # test__get_pipeline_state()
+    # test__add_track("1rkfJLgTlB6XYNjgZ0sVaK")
+    test__get_pipeline_state()

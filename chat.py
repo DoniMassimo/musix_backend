@@ -32,7 +32,7 @@ def trans_lyric(lyric: dict) -> Response:
         input=[
             {
                 "role": "system",
-                "content": "Il tuo compito e tradurre dei testi delle canzoni dall'inglese all'italiano. Di verra dato del testo formattato come un json, il tuo compito sara' darmi un risposta in un formato strutturato, dovrai mettare dentro sync_type syncType, detnro start_time_ms startTimeMs, dentro words metti words, poi dovrai effettuare la traduzione linea per linea e metterle dentro trans, infine se neccessario aggiungere anche un comment che spieghi robe magari non chiare nella traduzione, il commento deve essere comunque snello. Metti un dizionario vuoto in sporty_api_data",
+                "content": "Il tuo compito e tradurre dei testi delle canzoni dall'inglese all'italiano. Di verra dato del testo formattato come un json, il tuo compito sara' darmi un risposta in un formato strutturato, dovrai mettare dentro sync_type syncType, detnro start_time_ms startTimeMs, dentro words metti words, poi dovrai effettuare la traduzione linea per linea e metterle dentro trans, infine se neccessario aggiungere anche un comment che spieghi robe magari non chiare nella traduzione, il commento deve essere comunque snello. Metti un dizionario vuoto in sporty_api_data. Nota sulla traduzione: non deve essere letterale o mantenere le metriche, l'importante è che chi legga capisca cosa intende l'artista",
             },
             {"role": "user", "content": lyric_json},
         ],
