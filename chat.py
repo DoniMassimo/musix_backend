@@ -28,7 +28,7 @@ def trans_lyric(lyric: dict) -> Response:
     client = OpenAI()
     lyric_json = json.dumps(lyric)
     response = client.responses.parse(
-        model="gpt-5-mini",
+        model="gpt-5",
         input=[
             {
                 "role": "system",
