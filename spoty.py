@@ -2,7 +2,6 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import os
 from typing import Optional
-from typing import Optional
 
 
 SPOTIPY_CLIENT_ID: Optional[str] = None
@@ -34,7 +33,7 @@ def spoty_init():
 
 def get_track_info(track_id: str):
     track_id = "spotify:track:" + track_id
-    if spoty == None:
+    if spoty is None:
         raise RuntimeError("sp not initialized")
     results = spoty.track(track_id)
     if not results:

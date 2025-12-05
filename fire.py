@@ -2,7 +2,8 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 from chat import Response
-import os, json
+import os
+import json
 
 
 def fire_init():
