@@ -1,11 +1,18 @@
 import requests
-from dotenv import load_dotenv
-import os
 from pprint import pprint
 
 base_url = "http://127.0.0.1:5000"
 
 API_KEY = None
+
+
+def test__hello():
+    url = base_url + "/"
+    headers = {"x-api-key": API_KEY}
+    response = requests.get(url, headers=headers)
+    print(response.status_code)
+    if response.ok:
+        pprint(response.json())
 
 
 def test__get_tracks_ids():
@@ -42,12 +49,3 @@ def test__get_pipeline_state():
     print(response.status_code)
     if response.ok:
         pprint(response.json())
-
-
-if __name__ == "__main__":
-    load_dotenv("config/secrets.env")
-    API_KEY = os.getenv("API_KEY")
-    if API_KEY is None:
-        raise ValueError("Cant find env var API_KEY")
-    # test__add_track("1r6oq0Rzg47EvcfOL3rD3d")
-    test__get_pipeline_state()
