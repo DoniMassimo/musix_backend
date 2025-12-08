@@ -1,6 +1,5 @@
 import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import db
+from firebase_admin import credentials, db
 from chat import Response
 import os
 import json
@@ -13,7 +12,7 @@ def fire_init():
 
     FIRE_CERT = os.getenv("FIREBASE_CERT")
     if FIRE_CERT is None:
-        raise ValueError("Cant find env var FIRE_CERT")
+        raise ValueError("Cant find env var FIREBASE_CERT")
     fire_cert_dict = json.loads(FIRE_CERT)
     cred = credentials.Certificate(fire_cert_dict)
     firebase_admin.initialize_app(cred, options={"databaseURL": db_url})

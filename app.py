@@ -8,8 +8,33 @@ from enum import Enum
 from dotenv import load_dotenv
 import traceback
 import os
+import logging
+
+
+load_dotenv("config/secrets.env")
+API_KEY = os.getenv("API_KEY")
+if API_KEY is None:
+    raise ValueError("Cant find env var API_KEY")
+fire.fire_init()
+lyrics_mod.lyrics_mod_init()
+spoty.spoty_init()
+
 
 app = Flask(__name__)
+app.logger.setLevel(logging.DEBUG)
+
+fmt = logging.Formatter(
+    "%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(message)s")
+fh = logging.FileHandler("app.log")
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(fmt)
+sh = logging.StreamHandler()
+sh.setLevel(logging.DEBUG)
+sh.setFormatter(fmt)
+
+logger = logging.getLogger(app.name)
+logger.addHandler(fh)
+logger.addHandler(sh)
 
 
 class PipelineState(Enum):
@@ -21,8 +46,6 @@ class PipelineState(Enum):
     FAILED = "failed"
 
 
-API_KEY = None
-
 pipeline_running = False
 pipeline_state = PipelineState.STOP
 
@@ -30,7 +53,7 @@ pipeline_state = PipelineState.STOP
 @app.before_request
 def check_api_key():
     key = request.headers.get("x-api-key")
-    if key != API_KEY:
+    if key != API_KEY or API_KEY is None:
         abort(401, description="Unauthorized")
 
 
@@ -89,12 +112,11 @@ def get_track_data(track_id: str):
     return fire.get_track_data(track_id)
 
 
+@app.route("/")
+def home():
+    logger.info("caiooo")
+    return jsonify({"msg": "Hello"}), 200
+
+
 if __name__ == "__main__":
-    load_dotenv("config/secrets.env")
-    API_KEY = os.getenv("API_KEY")
-    if API_KEY is None:
-        raise ValueError("Cant find env var API_KEY")
-    fire.fire_init()
-    lyrics_mod.lyrics_mod_init()
-    spoty.spoty_init()
     app.run(host="localhost", port=5000, debug=True)
