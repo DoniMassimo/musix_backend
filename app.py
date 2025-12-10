@@ -2,21 +2,27 @@ import chat
 import lyrics_mod
 import fire
 import spoty
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request
 import threading
 from enum import Enum
 from dotenv import load_dotenv
 import traceback
 import os
 import logging
+from redis import Redis
+from rq import Queue
+import job
+import time
 
+redis_conn = Redis()
+queue = Queue(connection=redis_conn)
 
 load_dotenv("config/secrets.env")
 API_KEY = os.getenv("API_KEY")
 if API_KEY is None:
     raise ValueError("Cant find env var API_KEY")
 fire.fire_init()
-lyrics_mod.lyrics_mod_init()
+# lyrics_mod.lyrics_mod_init()
 spoty.spoty_init()
 
 
@@ -112,9 +118,18 @@ def get_track_data(track_id: str):
     return fire.get_track_data(track_id)
 
 
+@app.route("/rq")
+def rq_test():
+    logger.info("test job")
+    p = queue.enqueue(job.job_test)
+    logger.info(f"{p.get_id()}")
+    time.sleep(2)
+    logger.info(f"{p.return_value()}")
+    return jsonify({"msg": "rq"}), 200
+
+
 @app.route("/")
 def home():
-    logger.info("caiooo")
     return jsonify({"msg": "Hello"}), 200
 
 

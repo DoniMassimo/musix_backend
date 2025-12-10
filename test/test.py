@@ -6,6 +6,15 @@ base_url = "http://127.0.0.1:5000"
 API_KEY = None
 
 
+def test__rq_test():
+    url = base_url + "/rq"
+    headers = {"x-api-key": API_KEY}
+    response = requests.get(url, headers=headers)
+    print(response.status_code)
+    if response.ok:
+        pprint(response.json())
+
+
 def test__hello():
     url = base_url + "/"
     headers = {"x-api-key": API_KEY}
