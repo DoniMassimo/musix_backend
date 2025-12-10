@@ -9,13 +9,11 @@ from dotenv import load_dotenv
 import traceback
 import os
 import logging
-from redis import Redis
+import redis
 from rq import Queue
 import job
 import time
 
-redis_conn = Redis()
-queue = Queue(connection=redis_conn)
 
 load_dotenv("config/secrets.env")
 API_KEY = os.getenv("API_KEY")
@@ -25,6 +23,13 @@ fire.fire_init()
 # lyrics_mod.lyrics_mod_init()
 spoty.spoty_init()
 
+
+REDIS_URL = os.getenv("REDIS_URL")
+if REDIS_URL is None:
+    raise ValueError("Cant find env var REDIS_URL")
+
+redis_conn = redis.from_url(REDIS_URL)
+queue = Queue(connection=redis_conn)
 
 app = Flask(__name__)
 app.logger.setLevel(logging.DEBUG)
