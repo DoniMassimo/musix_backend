@@ -54,7 +54,7 @@ pipeline_state = PipelineState.STOP
 def check_api_key():
     key = request.headers.get("x-api-key")
     if key != API_KEY or API_KEY is None:
-        abort(401, description="Unauthorized")
+        return jsonify({"msg": "Unauthorized"}), 401
 
 
 def translation_pipeline(track_id):
