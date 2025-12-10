@@ -1,6 +1,5 @@
 import firebase_admin
 from firebase_admin import credentials, db
-from chat import Response
 import os
 import json
 
@@ -16,13 +15,6 @@ def fire_init():
     fire_cert_dict = json.loads(FIRE_CERT)
     cred = credentials.Certificate(fire_cert_dict)
     firebase_admin.initialize_app(cred, options={"databaseURL": db_url})
-
-
-def save_lyric(lyric: Response):
-    lyric_dump = lyric.model_dump()
-
-    ref = db.reference("/")
-    ref.child("lyrics").child(lyric.lyric.track_id).set(lyric_dump)
 
 
 def get_all_ids() -> list:
