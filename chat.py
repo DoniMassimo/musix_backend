@@ -1,6 +1,7 @@
 from openai import OpenAI
 from pydantic import BaseModel
 import json
+from pprint import pprint
 
 
 class Line(BaseModel):
@@ -28,11 +29,14 @@ def trans_lyric(lyric: dict) -> Response:
     client = OpenAI()
     lyric_json = json.dumps(lyric)
     response = client.responses.parse(
-        model="gpt-5",
+        model="gpt-5-nano-2025-08-07",
         input=[
             {
                 "role": "system",
-                "content": "Il tuo compito e tradurre dei testi delle canzoni dall'inglese all'italiano. Di verra dato del testo formattato come un json, il tuo compito sara' darmi un risposta in un formato strutturato, dovrai mettare dentro sync_type syncType, detnro start_time_ms startTimeMs, dentro words metti words, poi dovrai effettuare la traduzione linea per linea e metterle dentro trans, infine se neccessario aggiungere anche un comment che spieghi robe magari non chiare nella traduzione, il commento deve essere comunque snello. Metti un dizionario vuoto in sporty_api_data. Nota sulla traduzione: non deve essere letterale o mantenere le metriche, l'importante è che chi legga capisca cosa intende l'artista",
+                "content": """Il tuo compito è spiegare testi inlgesi in italiano in modo da capirne il significato.
+                            Di verra dato del testo formattato come un json, il tuo compito sarà darmi un risposta in un formato strutturato, dovrai mettare dentro sync_type syncType, detnro start_time_ms startTimeMs, dentro words metti words, poi dovrai effettuare la spieagazione linea per linea e metterle dentro trans, devi cercare di essere succinto, in lineae generale sarebbe comodo se la spiegazione non superasse 3 volte il numero di caratteri del testo original (spiegazione < 3 * num char testo originale).
+                            Infine se neccessario aggiungere in comment cose che non ci stavanao nella spiegazione succinta.
+                            Il testo potrebbe contenere ripetzioni, lascia le righe a cui hai gia dato una spiegazione vuote.""",
             },
             {"role": "user", "content": lyric_json},
         ],
@@ -43,4 +47,6 @@ def trans_lyric(lyric: dict) -> Response:
         translation: Response = response.output_parsed
         return translation
     else:
+        pprint("risposta: ###############")
+        pprint(response)
         raise Exception("trans = None")

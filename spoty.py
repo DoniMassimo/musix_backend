@@ -25,7 +25,7 @@ def spoty_init():
         auth_manager=SpotifyOAuth(
             client_id=SPOTIPY_CLIENT_ID,
             client_secret=SPOTIPY_CLIENT_SECRET,
-            redirect_uri="http://localhost:3000",
+            redirect_uri="http://127.0.0.1:3000",
             scope="user-library-read",
         )
     )
