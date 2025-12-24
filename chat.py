@@ -1,4 +1,5 @@
 from openai import OpenAI
+from openai.types.responses import ResponsePromptParam
 from pydantic import BaseModel
 import json
 from pprint import pprint
@@ -25,23 +26,22 @@ class Response(BaseModel):
     lyric: Lyric
 
 
-def trans_lyric(lyric: dict) -> Response:
+def trans_lyric(lyric: dict, song="", album="", artist="") -> Response:
     client = OpenAI()
     lyric_json = json.dumps(lyric)
+    prompt = ResponsePromptParam(
+        id="pmpt_6942d50237c081969b659017cdfceec508145f8c56c1e818",
+        variables={"song": song, "album": album, "artist": artist},
+    )
     response = client.responses.parse(
         model="gpt-5-nano-2025-08-07",
+        prompt=prompt,
         input=[
-            {
-                "role": "system",
-                "content": """Il tuo compito è spiegare testi inlgesi in italiano in modo da capirne il significato.
-                            Di verra dato del testo formattato come un json, il tuo compito sarà darmi un risposta in un formato strutturato, dovrai mettare dentro sync_type syncType, detnro start_time_ms startTimeMs, dentro words metti words, poi dovrai effettuare la spieagazione linea per linea e metterle dentro trans, devi cercare di essere succinto, in lineae generale sarebbe comodo se la spiegazione non superasse 3 volte il numero di caratteri del testo original (spiegazione < 3 * num char testo originale).
-                            Infine se neccessario aggiungere in comment cose che non ci stavanao nella spiegazione succinta.
-                            Il testo potrebbe contenere ripetzioni, lascia le righe a cui hai gia dato una spiegazione vuote.""",
-            },
             {"role": "user", "content": lyric_json},
         ],
         text_format=Response,
     )
+
     translation: Response
     if response.output_parsed:
         translation: Response = response.output_parsed

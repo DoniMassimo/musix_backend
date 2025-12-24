@@ -25,9 +25,6 @@ class PipelineState(Enum):
 
 
 def translation_pipeline(track_id):
-    # debugpy.listen(("0.0.0.0", 5678))
-    # print("In attesa del debugger...")
-    # debugpy.wait_for_client()
     job = rq.get_current_job()
     if job is None:
         raise RuntimeError("No RQ job is currently running")
@@ -38,9 +35,14 @@ def translation_pipeline(track_id):
 
         job.meta["state"] = PipelineState.TRANSLATING.value
         job.save_meta()
-        trans_lyric: chat.Response = chat.trans_lyric(lyric)
 
         spoty_api_data = spoty.get_track_info(track_id)
+        trans_lyric: chat.Response = chat.trans_lyric(
+            lyric,
+            artist=spoty_api_data["artists"][0]["name"],
+            song=spoty_api_data["name"],
+            album=spoty_api_data["album"]["name"],
+        )
         trans_lyric.lyric.spoty_api_data = spoty_api_data
 
         job.meta["state"] = PipelineState.SAVING.value

@@ -72,8 +72,6 @@ def get_transl_job_state(job_id: str):
     )
 
 
-# TODO: check if track is arleady downloaded and if exixts in spotify, or if arledy exist job with that
-# track_id
 @app.route("/start_transl_job/<track_id>")
 def start_transl_job(track_id: str):
     transl_job = queue.enqueue(tasks.translation_pipeline, track_id, job_timeout="20m")
