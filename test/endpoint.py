@@ -53,7 +53,10 @@ def test__get_track_data(track_id):
 def test__start_transl_job(track_id):
     url = f"{base_url}/start_transl_job/{track_id}"
     headers = {"x-api-key": API_KEY}
-    response = requests.get(url, headers=headers)
+    http_data = {
+        "instruction": "nella sezione comment aggiungi un elenco puntano della parole o modi di dire che per un italinao alle prime armi di inglesee possonorisulare difficili"
+    }
+    response = requests.post(url, headers=headers, data=http_data)
     print(response.status_code)
     pprint(response.json())
 

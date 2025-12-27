@@ -7,6 +7,7 @@ import redis
 import rq
 from rq.exceptions import NoSuchJobError
 import tasks
+from pprint import pprint
 
 
 dotenv.load_dotenv("config/secrets.env")
@@ -72,9 +73,15 @@ def get_transl_job_state(job_id: str):
     )
 
 
-@app.route("/start_transl_job/<track_id>")
+@app.route("/start_transl_job/<track_id>", methods=["POST"])
 def start_transl_job(track_id: str):
-    transl_job = queue.enqueue(tasks.translation_pipeline, track_id, job_timeout="20m")
+    data = request.get_json(silent=True)
+    user_instruction = ""
+    if data and "instruction" in data:
+        user_instruction = data["instruction"]
+    transl_job = queue.enqueue(
+        tasks.translation_pipeline, track_id, user_instruction, job_timeout="20m"
+    )
     job_id = transl_job.get_id()
     ret = jsonify({"succes": True, "data": {"transl_job_id": job_id}})
     return (ret, 202)

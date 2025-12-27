@@ -24,7 +24,7 @@ class PipelineState(Enum):
     FAILED = "failed"
 
 
-def translation_pipeline(track_id):
+def translation_pipeline(track_id, user_instruction=""):
     job = rq.get_current_job()
     if job is None:
         raise RuntimeError("No RQ job is currently running")
@@ -42,6 +42,7 @@ def translation_pipeline(track_id):
             artist=spoty_api_data["artists"][0]["name"],
             song=spoty_api_data["name"],
             album=spoty_api_data["album"]["name"],
+            user_instruction=user_instruction,
         )
         trans_lyric.lyric.spoty_api_data = spoty_api_data
 

@@ -26,7 +26,9 @@ class Response(BaseModel):
     lyric: Lyric
 
 
-def trans_lyric(lyric: dict, song="", album="", artist="") -> Response:
+def trans_lyric(
+    lyric: dict, song="", album="", artist="", user_instruction=""
+) -> Response:
     client = OpenAI()
     lyric_json = json.dumps(lyric)
     prompt = ResponsePromptParam(
@@ -37,6 +39,7 @@ def trans_lyric(lyric: dict, song="", album="", artist="") -> Response:
         model="gpt-5-nano-2025-08-07",
         prompt=prompt,
         input=[
+            {"role": "user", "content": user_instruction},
             {"role": "user", "content": lyric_json},
         ],
         text_format=Response,
