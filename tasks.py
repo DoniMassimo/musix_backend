@@ -1,5 +1,4 @@
 from enum import Enum
-import debugpy
 import chat
 import lyrics_mod
 import fire
@@ -16,12 +15,10 @@ spoty.spoty_init()
 
 
 class PipelineState(Enum):
-    STOP = "stop"
     DOWNLOADING = "downloading"
     TRANSLATING = "translating"
     SAVING = "saving"
     SUCCES = "succes"
-    FAILED = "failed"
 
 
 def translation_pipeline(track_id, user_instruction=""):
