@@ -1,5 +1,6 @@
 import firebase_admin
 from firebase_admin import credentials, db
+from chat import Response
 import os
 import json
 
@@ -17,6 +18,13 @@ def fire_init():
     firebase_admin.initialize_app(cred, options={"databaseURL": db_url})
 
 
+def save_lyric(lyric: Response):
+    lyric_dump = lyric.model_dump()
+
+    ref = db.reference("/")
+    ref.child("lyrics").child(lyric.lyric.track_id).set(lyric_dump)
+
+
 def get_all_ids() -> list:
     ref = db.reference("lyrics")
     raw_ids = ref.get(False, True)
@@ -26,8 +34,8 @@ def get_all_ids() -> list:
     return []
 
 
-def get_track_data(track_id) -> dict:
-    ref = db.reference("lyrics" + "/" + track_id)
+def get_transl_data(transl_id) -> dict:
+    ref = db.reference("lyrics" + "/" + transl_id)
     data = ref.get()
     if isinstance(data, dict):
         return data

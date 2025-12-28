@@ -43,7 +43,7 @@ def check_api_key():
         return jsonify({"msg": "Unauthorized"}), 401
 
 
-@app.route("/transl_job_state/<job_id>")
+@app.route("/translations/jobs/<job_id>")
 def get_transl_job_state(job_id: str):
     try:
         transl_job = rq.job.Job.fetch(job_id, redis_conn)
@@ -73,7 +73,7 @@ def get_transl_job_state(job_id: str):
     )
 
 
-@app.route("/start_transl_job/<track_id>", methods=["POST"])
+@app.route("/translations/<string:track_id>", methods=["POST"])
 def start_transl_job(track_id: str):
     data = request.get_json(silent=True)
     user_instruction = ""
@@ -87,15 +87,15 @@ def start_transl_job(track_id: str):
     return (ret, 202)
 
 
-@app.route("/get_tracks_ids")
-def get_tracks_ids():
-    tracks_ids = fire.get_all_ids()
-    return jsonify(tracks_ids), 200
+@app.route("/translations_ids")
+def get_translations_ids():
+    transls_ids = fire.get_all_ids()
+    return jsonify(transls_ids), 200
 
 
-@app.route("/get_track_data/<track_id>")
-def get_track_data(track_id: str):
-    return fire.get_track_data(track_id)
+@app.route("/translations/<string:transl_id>")
+def get_translations(transl_id: str):
+    return fire.get_transl_data(transl_id)
 
 
 @app.errorhandler(404)

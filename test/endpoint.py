@@ -14,15 +14,6 @@ def test__404():
     pprint(response.json())
 
 
-def test__rq_test():
-    url = base_url + "/rq"
-    headers = {"x-api-key": API_KEY}
-    response = requests.get(url, headers=headers)
-    print(response.status_code)
-    if response.ok:
-        pprint(response.json())
-
-
 def test__hello():
     url = base_url + "/"
     headers = {"x-api-key": API_KEY}
@@ -32,8 +23,8 @@ def test__hello():
         pprint(response.json())
 
 
-def test__get_tracks_ids():
-    url = base_url + "/get_tracks_ids"
+def test__get_translations_ids():
+    url = f"{base_url}/translations_ids"
     headers = {"x-api-key": API_KEY}
     response = requests.get(url, headers=headers)
     print(response.status_code)
@@ -41,17 +32,18 @@ def test__get_tracks_ids():
         pprint(response.json())
 
 
-def test__get_track_data(track_id):
-    url = base_url + "/get_track_data/" + track_id
+def test__get_translations(trans_id):
+    url = f"{base_url}/translations/{trans_id}"
     headers = {"x-api-key": API_KEY}
+    print(headers)
     response = requests.get(url, headers=headers)
     print(response.status_code)
     if response.ok:
         pprint(response.json())
 
 
-def test__start_transl_job(track_id):
-    url = f"{base_url}/start_transl_job/{track_id}"
+def test__start_transl_job(trans_id):
+    url = f"{base_url}/translations/{trans_id}"
     headers = {"x-api-key": API_KEY}
     http_data = {
         "instruction": "nella sezione comment aggiungi un elenco puntano della parole o modi di dire che per un italinao alle prime armi di inglesee possonorisulare difficili"
@@ -62,7 +54,7 @@ def test__start_transl_job(track_id):
 
 
 def test__get_transl_job_state(job_id):
-    url = f"{base_url}/transl_job_state/{job_id}"
+    url = f"{base_url}/translations/jobs/{job_id}"
     headers = {"x-api-key": API_KEY}
     response = requests.get(url, headers=headers)
     print(response.status_code)
