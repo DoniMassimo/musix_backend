@@ -48,7 +48,7 @@ def test__start_transl_job(trans_id):
     http_data = {
         "instruction": "nella sezione comment aggiungi un elenco puntano della parole o modi di dire che per un italinao alle prime armi di inglesee possonorisulare difficili"
     }
-    response = requests.post(url, headers=headers, data=http_data)
+    response = requests.post(url, headers=headers, json=http_data)
     print(response.status_code)
     pprint(response.json())
 

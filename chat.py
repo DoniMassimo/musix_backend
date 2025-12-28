@@ -41,9 +41,9 @@ def trans_lyric(
             {
                 "role": "system",
                 "content": (
-                    "Le seguenti indicazione che ti vengono date riguardano una canzone con queste informazioni, se le info mancano cerca comunque di portare a termine il compito:"
-                    f"- canzone: {song}"
-                    f"- artista: {artist}"
+                    "Le seguenti indicazione che ti vengono date riguardano una canzone con queste informazioni, se le info mancano cerca comunque di portare a termine il compito:\n"
+                    f"- canzone: {song}\n"
+                    f"- artista: {artist}\n"
                     f"- album: {album}"
                 ),
             },
