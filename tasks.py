@@ -15,21 +15,16 @@ spoty.spoty_init()
 
 
 class PipelineState(Enum):
-    DOWNLOADING = "downloading"
     TRANSLATING = "translating"
     SAVING = "saving"
     SUCCES = "succes"
 
 
-def translation_pipeline(track_id, user_instruction=""):
+def translation_pipeline(track_id, lyric, user_instruction=""):
     job = rq.get_current_job()
     if job is None:
         raise RuntimeError("No RQ job is currently running")
     try:
-        job.meta["state"] = PipelineState.DOWNLOADING.value
-        job.save_meta()
-        lyric = lyrics_mod.download_lyrics(track_id)
-
         job.meta["state"] = PipelineState.TRANSLATING.value
         job.save_meta()
 

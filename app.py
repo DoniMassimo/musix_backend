@@ -7,6 +7,7 @@ import logging
 import redis
 import rq
 from rq.exceptions import NoSuchJobError
+import lyrics_mod
 import tasks
 from pprint import pprint
 
@@ -67,12 +68,24 @@ def get_transl_job_state(job_id: str):
 
 @app.route("/translations/<string:track_id>", methods=["POST"])
 def start_transl_job(track_id: str):
+    if fire.transl_exist(track_id):
+        abort(409, description=f"translation with id {track_id} already exists")
+    lyric = None
+    try:
+        lyric = lyrics_mod.download_lyrics(track_id)
+    except:
+        abort(
+            503,
+            description=f"lyric for {track_id} temporarily unavailable for download",
+        )
+    if not lyric:
+        abort(422, description=f"lyric for {track_id} not available for download")
     data = request.get_json(silent=True)
     user_instruction = ""
     if data and "instruction" in data:
         user_instruction = data["instruction"]
     transl_job = queue.enqueue(
-        tasks.translation_pipeline, track_id, user_instruction, job_timeout="20m"
+        tasks.translation_pipeline, track_id, lyric, user_instruction, job_timeout="20m"
     )
     job_id = transl_job.get_id()
     ret = jsonify({"succes": True, "data": {"transl_job_id": job_id}})

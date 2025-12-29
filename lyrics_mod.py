@@ -21,6 +21,6 @@ def download_lyrics(track_id: str) -> dict:
         raise RuntimeError("syir not initialized")
     lyrics = syir.get_lyrics(track_id)
     if lyrics is None:
-        raise Exception("lyric = None")
+        return {}
     lyrics["lyrics"]["track_id"] = track_id
     return cast(dict, lyrics)
