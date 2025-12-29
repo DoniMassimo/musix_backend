@@ -59,3 +59,11 @@ def test__get_transl_job_state(job_id):
     response = requests.get(url, headers=headers)
     print(response.status_code)
     pprint(response.json())
+
+
+def test__delete_translation(transl_id):
+    url = f"{base_url}/translations/{transl_id}"
+    headers = {"x-api-key": API_KEY}
+    response = requests.delete(url, headers=headers)
+    print(response.status_code)
+    pprint(response.json())

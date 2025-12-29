@@ -18,6 +18,19 @@ def fire_init():
     firebase_admin.initialize_app(cred, options={"databaseURL": db_url})
 
 
+def transl_exist(transl_id):
+    ref = db.reference(f"lyrics/{transl_id}")
+    data = ref.get()
+    if data:
+        return True
+    return False
+
+
+def delete_translation(transl_id):
+    ref = db.reference(f"lyrics/{transl_id}")
+    ref.delete()
+
+
 def save_lyric(lyric: Response):
     lyric_dump = lyric.model_dump()
 

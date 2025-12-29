@@ -87,6 +87,24 @@ def start_transl_job(track_id: str):
     return (ret, 202)
 
 
+@app.route("/translations/<string:transl_id>", methods=["DELETE"])
+def delete_translation(transl_id: str):
+    if not fire.transl_exist(transl_id):
+        ret = jsonify(
+            {
+                "succes": False,
+                "error": {
+                    "code": "RESOURCE_NOT_FOUND",
+                    "message": f"translation not found with id {transl_id}",
+                },
+            }
+        )
+        return ret, 404
+    fire.delete_translation(transl_id)
+    ret = jsonify({"succes": True, "data": {"transl_id": transl_id}})
+    return (ret, 200)
+
+
 @app.route("/translations_ids")
 def get_translations_ids():
     transls_ids = fire.get_all_ids()

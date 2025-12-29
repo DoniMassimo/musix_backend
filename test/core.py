@@ -8,9 +8,11 @@ sys.path.append(str(parent_dir))
 
 import spoty
 import lyrics_mod
+import fire
 
 lyrics_mod.lyrics_mod_init()
 spoty.spoty_init()
+fire.fire_init()
 
 
 def generate_download_lyric_mock():
