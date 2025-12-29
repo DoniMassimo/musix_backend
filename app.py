@@ -1,5 +1,6 @@
 import fire
-from flask import Flask, jsonify, request
+from flask import Flask, abort, jsonify, request
+from werkzeug.exceptions import HTTPException
 import dotenv
 import os
 import logging
@@ -48,16 +49,7 @@ def get_transl_job_state(job_id: str):
     try:
         transl_job = rq.job.Job.fetch(job_id, redis_conn)
     except NoSuchJobError:
-        ret = jsonify(
-            {
-                "succes": False,
-                "error": {
-                    "code": "RESOURCE_NOT_FOUND",
-                    "message": f"translation job not found with id{job_id}",
-                },
-            }
-        )
-        return ret, 404
+        abort(404, description=f"translation job not found with id: {job_id}")
     job_status = transl_job.get_status().value
     job_meta = transl_job.get_meta()
     if job_status in (
@@ -90,16 +82,7 @@ def start_transl_job(track_id: str):
 @app.route("/translations/<string:transl_id>", methods=["DELETE"])
 def delete_translation(transl_id: str):
     if not fire.transl_exist(transl_id):
-        ret = jsonify(
-            {
-                "succes": False,
-                "error": {
-                    "code": "RESOURCE_NOT_FOUND",
-                    "message": f"translation not found with id {transl_id}",
-                },
-            }
-        )
-        return ret, 404
+        abort(404, description=f"translation with id {transl_id} does not exisit")
     fire.delete_translation(transl_id)
     ret = jsonify({"succes": True, "data": {"transl_id": transl_id}})
     return (ret, 200)
@@ -116,19 +99,17 @@ def get_translations(transl_id: str):
     return fire.get_transl_data(transl_id)
 
 
-@app.errorhandler(404)
-def handle_404(error):
-    return (
-        jsonify(
-            {
-                "success": False,
-                "error": {
-                    "code": "RESOURCE_NOT_FOUND",
-                },
-            }
-        ),
-        404,
-    )
+@app.errorhandler(HTTPException)
+def handle_http_exception(error):
+    response = {
+        "success": False,
+        "error": {
+            "code": error.code,
+            "name": error.name,
+            "message": error.description,
+        },
+    }
+    return jsonify(response), error.code
 
 
 @app.route("/")
