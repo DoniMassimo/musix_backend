@@ -30,7 +30,7 @@ def translation_pipeline(track_id, lyric, user_instruction=""):
 
         spoty_api_data = spoty.get_track_info(track_id)
         trans_lyric: chat.Response = chat.trans_lyric(
-            lyric,
+            lyric=lyric,
             artist=spoty_api_data["artists"][0]["name"],
             song=spoty_api_data["name"],
             album=spoty_api_data["album"]["name"],
