@@ -13,6 +13,8 @@ if API_KEY is None:
 app = Flask(__name__)
 app.logger.setLevel(logging.DEBUG)
 
+fire.fire_init()
+
 
 @app.before_request
 def check_api_key():
