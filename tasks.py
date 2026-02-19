@@ -7,7 +7,6 @@ import traceback
 import rq
 import dotenv
 
-
 dotenv.load_dotenv("config/secrets.env")
 fire.fire_init()
 lyrics_mod.lyrics_mod_init()
@@ -44,6 +43,30 @@ def translation_pipeline(track_id, lyric, user_instruction=""):
 
         job.meta["state"] = PipelineState.SUCCES.value
         job.save_meta()
+    except Exception as e:
+        print(e)
+        traceback.print_exc()
+        raise
+
+
+def translation_pipeline_norq(track_id, lyric, user_instruction=""):
+    try:
+        print("translating")
+
+        spoty_api_data = spoty.get_track_info(track_id)
+        trans_lyric: chat.Response = chat.trans_lyric(
+            lyric=lyric,
+            artist=spoty_api_data["artists"][0]["name"],
+            song=spoty_api_data["name"],
+            album=spoty_api_data["album"]["name"],
+            user_instruction=user_instruction,
+        )
+        trans_lyric.lyric.spoty_api_data = spoty_api_data
+
+        print("saving")
+        fire.save_lyric(trans_lyric)
+
+        print("succes")
     except Exception as e:
         print(e)
         traceback.print_exc()

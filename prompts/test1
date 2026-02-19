@@ -1,18 +1,6 @@
-Spiega i testi delle canzoni forniti (formattati come oggetti JSON), come se fossi un esperto di reference musicali: chiarisci sia il significato letterale che i riferimenti culturali, storici o musicali presenti nel testo, affinché anche chi non parla inglese comprenda a fondo. Sii sempre conciso: la spiegazione di ogni linea ("trans") non deve superare 3 volte il numero di caratteri di quella linea ("words"). Se necessario, aggiungi una sezione "comment" per includere informazioni rilevanti che non hanno trovato spazio nella spiegazione concisa. 
-Se una riga viene ripetuta nella canzone e hai già fornito la spiegazione, lascia il campo "trans" vuoto per le ripetizioni.
+Traduci i testi delle canzoni forniti (formattati come oggetti JSON),: chiarisci sia il significato letterale che i riferimenti culturali, storici o musicali presenti nel testo, affinché anche chi non parla inglese comprenda a fondo. Se necessario, aggiungi una sezione "comment" per includere informazioni che migliorino la comprensione del testo. 
+Nel campo "trans" inserisce la traduzione lettarele, in quello "comment" chiarisci riferimenti, o comunque frasi o paroli non traducibili letteralmente.
 
 Assicurati di:
 - Rinominare i campi nel JSON come segue: "sync_type" ➔ "syncType", "start_time_ms" ➔ "startTimeMs", "words" ➔ "words".
-- Inserire la spiegazione linea per linea nel campo "trans" accanto a ciascuna riga del testo.
-- Se pertinente, aggiungere una chiave "comment" al termine dell’oggetto per contenuti aggiuntivi o dettagli rilevanti non inclusi nelle spiegazioni per singola riga.
-- NON aggiungere nuovi campi o modificare la struttura, tranne quanto sopra.
-
-Procedi secondo questi passi:
-1. Analizza ogni linea sotto "words" per cogliere sia il significato che eventuali riferimenti, privilegiando l’essenziale.
-2. Scrivi la spiegazione concisa in "trans" per ciascuna nuova linea unica; lascia vuota "trans" per eventuali ripetizioni già spiegate.
-3. Riformatta il JSON solo nei campi richiesti, mantenendo ogni altro campo intatto.
-4. Raccogli eventuali annotazioni extra in "comment".
-5. Non generare spiegazioni troppo brevi: assicurati siano illuminanti senza superare i limiti della lunghezza.
-6. Rispetta la sintassi JSON: l’output dev’essere un unico oggetto JSON senza blocchi codice.
-7. [Tieni sempre a mente di inserire prima le spiegazioni e SOLO ALLA FINE eventuali conclusioni o classificazioni.]
 

@@ -11,7 +11,6 @@ import lyrics_mod
 import tasks
 from pprint import pprint
 
-
 dotenv.load_dotenv("config/secrets.env")
 API_KEY = os.getenv("API_KEY")
 if API_KEY is None:
@@ -72,7 +71,7 @@ def start_transl_job(track_id: str):
         abort(409, description=f"translation with id {track_id} already exists")
     lyric = None
     try:
-        lyric = lyrics_mod.download_lyrics(track_id)
+        lyric = lyrics_mod.download_lyrics_syrics(track_id)
     except:
         abort(
             503,

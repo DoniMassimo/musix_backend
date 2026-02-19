@@ -4,18 +4,23 @@ from chat import Response
 import os
 import json
 
+isInit = False
+
 
 def fire_init():
-    db_url = os.getenv("FIREBASE_DB_URL")
-    if db_url is None:
-        raise ValueError("Cant find env var FIREBASE_DB_URL")
+    global isInit
+    if not isInit:
+        db_url = os.getenv("FIREBASE_DB_URL")
+        if db_url is None:
+            raise ValueError("Cant find env var FIREBASE_DB_URL")
 
-    FIRE_CERT = os.getenv("FIREBASE_CERT")
-    if FIRE_CERT is None:
-        raise ValueError("Cant find env var FIREBASE_CERT")
-    fire_cert_dict = json.loads(FIRE_CERT)
-    cred = credentials.Certificate(fire_cert_dict)
-    firebase_admin.initialize_app(cred, options={"databaseURL": db_url})
+        FIRE_CERT = os.getenv("FIREBASE_CERT")
+        if FIRE_CERT is None:
+            raise ValueError("Cant find env var FIREBASE_CERT")
+        fire_cert_dict = json.loads(FIRE_CERT)
+        cred = credentials.Certificate(fire_cert_dict)
+        firebase_admin.initialize_app(cred, options={"databaseURL": db_url})
+        isInit = True
 
 
 def transl_exist(transl_id):

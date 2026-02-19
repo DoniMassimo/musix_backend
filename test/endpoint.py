@@ -67,3 +67,10 @@ def test__delete_translation(transl_id):
     response = requests.delete(url, headers=headers)
     print(response.status_code)
     pprint(response.json())
+
+
+def test_lclib():
+    url = "http://lrclib.net/api/search?artist_name=Borislav+Slavov&track_name=I+Want+to+Live&album_name=Baldur%27s+Gate+3+(Original+Game+Soundtrack)&duration=233"
+    response = requests.get(url)
+    print(response.status_code)
+    pprint(response.content)
