@@ -36,7 +36,8 @@ def trans_lyric(
         prompt = file.read()
 
     response = client.responses.parse(
-        model="gpt-5-nano-2025-08-07",
+        # model="gpt-5-nano-2025-08-07",
+        model="gpt-5.4-2026-03-05",
         input=[
             {
                 "role": "system",
