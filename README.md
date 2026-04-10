@@ -52,8 +52,10 @@ The current limitation is the deployment environment:
 - [ ] Self-host the full backend locally or on a VPS
 - [ ] Enable full Redis + RQ worker support
 - [ ] Unify API + background processing in a single deployment
-- [ ] Improve scalability of translation pipeline
+- [ ] Improve scalability of the translation pipeline
 - [ ] Add authentication system for users
+- [ ] Extend the architecture from single-user to multi-user support
+- [ ] Provide a **demo API access mode via API key**, allowing external users to test the service safely without full system access
 
 ---
 
