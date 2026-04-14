@@ -7,6 +7,7 @@ import logging
 import redis
 import rq
 from rq.exceptions import NoSuchJobError
+from rq import registry
 import lyrics_mod
 import tasks
 from pprint import pprint
@@ -84,7 +85,11 @@ def start_transl_job(track_id: str):
     if data and "instruction" in data:
         user_instruction = data["instruction"]
     transl_job = queue.enqueue(
-        tasks.translation_pipeline, track_id, lyric, user_instruction, job_timeout="20m"
+        tasks.translation_pipeline_norq,
+        track_id,
+        lyric,
+        user_instruction,
+        job_timeout="20m",
     )
     job_id = transl_job.get_id()
     ret = jsonify({"succes": True, "data": {"transl_job_id": job_id}})
