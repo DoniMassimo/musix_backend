@@ -1,9 +1,4 @@
 import requests
-from syrics.api import Spotify
-from typing import Optional, cast
-import os
-from pprint import pprint
-import json
 
 
 def _time_to_ms(time_str: str) -> int:
