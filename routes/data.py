@@ -1,7 +1,7 @@
 from flask import Blueprint, abort, jsonify
 import fire
 
-data_api = Blueprint("api", __name__)
+data_api = Blueprint("translations", __name__)
 
 
 @data_api.route("/translations/<string:transl_id>", methods=["DELETE"])
