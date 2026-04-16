@@ -9,7 +9,6 @@ import dotenv
 
 dotenv.load_dotenv("config/secrets.env")
 fire.fire_init()
-lyrics_mod.lyrics_mod_init()
 spoty.spoty_init()
 
 
