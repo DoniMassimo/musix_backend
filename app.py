@@ -72,7 +72,8 @@ def start_transl_job(track_id: str):
         abort(409, description=f"translation with id {track_id} already exists")
     lyric = None
     try:
-        lyric = lyrics_mod.download_lyrics_syrics(track_id)
+        # lyric = lyrics_mod.download_lyrics_syrics(track_id)
+        lyric = ""  # TODO: using lrclib
     except:
         abort(
             503,

@@ -5,33 +5,6 @@ import os
 from pprint import pprint
 import json
 
-syir: Optional[Spotify] = None
-
-
-def lyrics_mod_init():
-    global syir
-    SP_DC = os.getenv("SP_DC")
-
-    if SP_DC is None:
-        raise ValueError("Cant find env var SP_DC")
-
-    syir = Spotify(SP_DC)
-
-
-def download_lyrics_syrics(track_id: str) -> dict:
-    if syir is None:
-        raise RuntimeError("syir not initialized")
-    lyrics = syir.get_lyrics(track_id)
-    if lyrics is None:
-        return {}
-
-    ret = {"lyrics": {}}
-    ret["lyrics"]["syncType"] = lyrics["lyrics"]["syncType"]
-    ret["lyrics"]["lines"] = lyrics["lyrics"]["lines"]
-    ret["lyrics"]["track_id"] = track_id
-
-    return cast(dict, ret)
-
 
 def _time_to_ms(time_str: str) -> int:
     minutes, rest = time_str.split(":")
